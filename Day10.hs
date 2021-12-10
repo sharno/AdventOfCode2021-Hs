@@ -3,18 +3,6 @@ module Day10 where
 import Data.List
 
 -- PART 1
---parse s = foldl f (0,0,0,0) s
---  where
---  f (a,b,c,d) _ | a < 0 || b < 0 || c < 0 || d < 0 = (a,b,c,d)
---  f (a,b,c,d) '(' = (a+1,b,c,d)
---  f (a,b,c,d) ')' = (a-1,b,c,d)
---  f (a,b,c,d) '[' = (a,b+1,c,d)
---  f (a,b,c,d) ']' = (a,b-1,c,d)
---  f (a,b,c,d) '{' = (a,b,c+1,d)
---  f (a,b,c,d) '}' = (a,b,c-1,d)
---  f (a,b,c,d) '<' = (a,b,c,d+1)
---  f (a,b,c,d) '>' = (a,b,c,d-1)
-
 parse s = foldl f [] s
   where
   -- we keep the first illegal character while we continue folding
