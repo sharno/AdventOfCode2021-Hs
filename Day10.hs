@@ -48,24 +48,17 @@ score _ = 0
 day10p1 = sum $ map (score . parse) input
 
 -- PART 2
-closing s = foldr f [] s -- foldr is necessary here because the list is actually flipped after parsing
-  where
-  f '(' acc = ')':acc
-  f '[' acc = ']':acc
-  f '{' acc = '}':acc
-  f '<' acc = '>':acc
-  f _ _ = []
-
 score2 s = foldl f 0 s
   where
-  f acc ')' = acc * 5 + 1
-  f acc ']' = acc * 5 + 2
-  f acc '}' = acc * 5 + 3
-  f acc '>' = acc * 5 + 4
+  f acc '(' = acc * 5 + 1
+  f acc '[' = acc * 5 + 2
+  f acc '{' = acc * 5 + 3
+  f acc '<' = acc * 5 + 4
+  f _ _ = 0
 
 middle xs = xs !! (length xs `div` 2)
 
-day10p2 = middle . sort . map score2 . filter ((> 0) . length) $ map (closing . parse) input
+day10p2 = middle . sort . filter (> 0) . map score2 $ map parse input
 
 test =     ["[({(<(())[]>[[{[]{<()<>>"
     ,"[(()[<>])]({[<{<<[]>>("
