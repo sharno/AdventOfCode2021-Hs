@@ -8,6 +8,7 @@ import Day7
 import Day8
 import Day9
 import Day10
+import Day11
 
 main = do
   -- putStrLn $ show day1p1
@@ -28,5 +29,7 @@ main = do
   -- putStrLn $ show day8p2
   -- putStrLn $ show day9p1
   -- putStrLn $ show day9p2
-  putStrLn $ show day10p1
-  putStrLn $ show day10p2
+  -- putStrLn $ show day10p1
+  -- putStrLn $ show day10p2
+  putStrLn $ show day11p1
+  putStrLn $ show day11p2

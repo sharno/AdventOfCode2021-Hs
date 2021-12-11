@@ -35,6 +35,7 @@ score _ = 0
 
 day10p1 = sum $ map (score . parse) input
 
+
 -- PART 2
 score2 s = foldl f 0 s
   where
