@@ -38,4 +38,4 @@ main = do
   -- putStrLn $ show day12p1
   -- putStrLn $ show day12p2
   putStrLn $ show day13p1
-  putStrLn $ show day13p2
+  putStrLn $ day13p2
