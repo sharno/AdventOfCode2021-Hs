@@ -18,35 +18,49 @@ up cavern (i,j) = Just (i-1,j)
 left cavern (i,0) = Nothing
 left cavern (i,j) = Just (i,j-1)
 
-expand :: [[Int]] -> Path -> [Path]
-expand cavern (p, path) = map (\pp -> (pp, S.insert pp path)) $ filter (not . flip S.member path) $ catMaybes [down cavern p, right cavern p, up cavern p, left cavern p]
+expand :: [[Int]] -> Point -> [Point]
+expand cavern p = catMaybes [down cavern p, right cavern p, up cavern p, left cavern p]
 
 genGrid :: [[Int]] -> [[(Int, Int)]]
 genGrid cavern = [[(x,y) | y <- [0..length (cavern!!0) - 1]] | x <- [0..length cavern-1]]
 type Path = ((Int, Int), S.Set (Int, Int))
 
 type Point = (Int, Int)
-type PathSet = S.Set Point
-type PathMap = M.Map Int (M.Map Point PathSet)
-risk :: Int -> [[Int]] -> PathMap -> Int
-risk count cavern pathMap = if count > 1000 then score
-    else if M.member (width, width) paths then score
-    else if null expandedPaths then risk (count + 1) cavern remaining
-    else risk (count + 1) cavern newPaths
+type PathMap = M.Map Int (S.Set Point)
+risk :: Int -> [[Int]] -> PathMap -> S.Set Point -> String
+risk count cavern pathMap visited =  --if count == 1 then show expandedPoints else 
+    if S.member (width, width) points then (show score)
+    else if null expandedPoints then risk (count + 1) cavern remaining newlyVisited
+    else risk (count + 1) cavern newPaths newlyVisited
     where
     width = length cavern - 1
     (bestPaths, remaining) = fromJust $ M.minViewWithKey pathMap
-    (score, paths) = bestPaths
-    expandedPaths = concatMap (expand cavern) $ M.toList paths
-    newPaths = foldl (\acc ((x,y), path) -> 
-        M.insertWith (M.union) (score + cavern!!x!!y) (M.singleton (x,y) path) acc) 
+    (score, points) = bestPaths
+    newlyVisited = S.union visited points
+    expandedPoints = (S.fromList $ concatMap (expand cavern) points) S.\\ visited
+    newPaths = foldl (\acc (x,y) -> 
+        M.insertWith (S.union) (score + cavern!!x!!y) (S.singleton (x,y)) acc) 
         remaining 
-        expandedPaths
+        expandedPoints
 
-day15p1 = risk 0 input $ M.singleton 0 $ M.singleton (0,0) (S.singleton (0,0))
+
+day15p1 = risk 0 input (M.singleton 0 (S.singleton (0,0))) S.empty
 
 -- PART 2
-day15p2 = 2
+increase :: Int -> [[Int]] -> [[Int]]
+increase n grid = map (map (\x -> if rem (x + n) 9 == 0 then 9 else rem (x + n) 9)) grid
+
+increaseRows :: [[Int]] -> [[Int]]
+increaseRows grid = map (\row -> [inc x n | n <- [0..4], x <- row]) grid
+    where
+        inc x n = if rem (x + n) 9 == 0 then 9 else rem (x + n) 9
+
+increaseCols :: [[Int]] -> [[Int]]
+increaseCols grid = transpose $ increaseRows $ transpose grid
+
+day15p2 = risk 0 d (M.singleton 0 (S.singleton (0,0))) S.empty
+    where
+    d = increaseCols $ increaseRows input
 
 -- INPUT
 test = [
