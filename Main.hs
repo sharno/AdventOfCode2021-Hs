@@ -14,6 +14,7 @@ import Day13
 import Day14
 import Day15
 import Day16
+import Day17
 
 main = do
   -- putStrLn $ show day1p1
@@ -46,5 +47,7 @@ main = do
   -- putStrLn $ show day14p2
   -- putStrLn $ show day15p1
   -- putStrLn $ show day15p2
-  putStrLn $ show day16p1
-  putStrLn $ show day16p2
+  -- putStrLn $ show day16p1
+  -- putStrLn $ show day16p2
+  putStrLn $ show day17p1
+  putStrLn $ show day17p2
